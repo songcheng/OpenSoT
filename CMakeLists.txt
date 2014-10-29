@@ -78,6 +78,7 @@ ADD_LIBRARY(OpenSoT SHARED
                     src/constraints/velocity/ConvexHull.cpp
                     src/constraints/velocity/JointLimits.cpp
                     src/constraints/velocity/VelocityLimits.cpp
+	            src/constraints/velocity/SelfCollisionAvoidance.cpp
                     src/solvers/QPOases.cpp
                     src/tasks/Aggregated.cpp
                     src/tasks/velocity/Cartesian.cpp
