@@ -31,6 +31,7 @@ if(TRUE OR YCM_EP_DEVEL_MODE_OpenSoT)
                       testAggregatedConstraint
                       testBilateralConstraint
                       testJointLimitsVelocityBounds
+                      testSelfCollisionAvoidance
                       testVelocityLimitsVelocityBounds
                       testCoMVelocityVelocityConstraint
                       testConvexHullVelocityConstraint
@@ -62,6 +63,10 @@ add_dependencies(testJointLimitsVelocityBounds GTest-ext OpenSoT)
 ADD_EXECUTABLE(testVelocityLimitsVelocityBounds constraints/velocity/TestVelocityLimits.cpp)
 TARGET_LINK_LIBRARIES(testVelocityLimitsVelocityBounds ${TestLibs})
 add_dependencies(testVelocityLimitsVelocityBounds GTest-ext OpenSoT)
+
+ADD_EXECUTABLE(testSelfCollisionAvoidance constraints/velocity/TestSelfCollisionAvoidance.cpp)
+TARGET_LINK_LIBRARIES(testSelfCollisionAvoidance ${TestLibs})
+add_dependencies(testSelfCollisionAvoidance GTest-ext OpenSoT)
 
 ADD_EXECUTABLE(testCoMVelocityVelocityConstraint constraints/velocity/TestCoMVelocity.cpp)
 TARGET_LINK_LIBRARIES(testCoMVelocityVelocityConstraint ${TestLibs})
@@ -99,6 +104,7 @@ add_dependencies(testSolverQPOases GTest-ext OpenSoT)
 add_test(NAME OpenSoT_constraints_Aggregated COMMAND testAggregatedConstraint)
 add_test(NAME OpenSoT_constraints_BilateralConstraint COMMAND testBilateralConstraint)
 add_test(NAME OpenSoT_constraints_velocity_JointLimits  COMMAND testJointLimitsVelocityBounds)
+add_test(NAME OpenSoT_constraints_velocity_SelfCollisionAvoidance  COMMAND testSelfCollisionAvoidance)
 add_test(NAME OpenSoT_constraints_velocity_VelocityLimit COMMAND testVelocityLimitsVelocityBounds)
 add_test(NAME OpenSoT_constraints_velocity_CoMVelocity COMMAND testCoMVelocityVelocityConstraint)
 add_test(NAME OpenSoT_constraints_velocity_ConvexHull COMMAND testConvexHullVelocityConstraint)
