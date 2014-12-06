@@ -38,7 +38,7 @@ FIND_PACKAGE(urdf REQUIRED)
 FIND_PACKAGE(kdl_parser REQUIRED)
 FIND_PACKAGE(srdfdom REQUIRED)
 FIND_PACKAGE(moveit_core REQUIRED)
-FIND_PACKAGE(PCL 1.7 REQUIRED COMPONENTS filters surface)
+FIND_PACKAGE(PCL 1.8 COMPONENTS filters surface)
 FIND_PACKAGE(tf REQUIRED)
 
 # add include directories
@@ -70,6 +70,12 @@ include_directories("${qpOASES_INCLUDE_DIRS}")
 # for every file in sot_INCLUDES CMake already sets the property HEADER_FILE_ONLY
 file(GLOB_RECURSE sot_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/include" *.h)
 file(GLOB_RECURSE sot_SCRIPTS "${CMAKE_CURRENT_SOURCE_DIR}/python" *.py)
+
+if(PCL_FOUND)
+    set(pcl_dependent_src src/constraints/velocity/ConvexHull.cpp)
+else(PCL_FOUND)
+    message(">> Could not find PCL. Not compiling convex_hull.cpp")
+endif(PCL_FOUND)
 
 ADD_LIBRARY(OpenSoT SHARED
                     src/constraints/Aggregated.cpp

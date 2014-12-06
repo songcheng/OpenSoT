@@ -4,6 +4,8 @@ include(ExternalProject)
 set(PROJECTNAME tests)
 project(${PROJECTNAME})
 
+FIND_PACKAGE(PCL 1.8 COMPONENTS filters surface)
+
 # compite GTest
 find_package(GTest)
 if (NOT GTEST_FOUND)
@@ -69,9 +71,11 @@ ADD_EXECUTABLE(testCoMVelocityVelocityConstraint constraints/velocity/TestCoMVel
 TARGET_LINK_LIBRARIES(testCoMVelocityVelocityConstraint ${TestLibs})
 add_dependencies(testCoMVelocityVelocityConstraint GTest-ext OpenSoT)
 
-ADD_EXECUTABLE(testConvexHullVelocityConstraint constraints/velocity/TestConvexHull.cpp)
-TARGET_LINK_LIBRARIES(testConvexHullVelocityConstraint ${TestLibs} ${PCL_LIBRARIES})
-add_dependencies(testConvexHullVelocityConstraint GTest-ext OpenSoT)
+if(PCL_FOUND)
+  ADD_EXECUTABLE(testConvexHullVelocityConstraint constraints/velocity/TestConvexHull.cpp)
+  TARGET_LINK_LIBRARIES(testConvexHullVelocityConstraint ${TestLibs} ${PCL_LIBRARIES})
+  add_dependencies(testConvexHullVelocityConstraint GTest-ext OpenSoT)
+endif(PCL_FOUND)
 
 ADD_EXECUTABLE(testAggregatedTask tasks/TestAggregated.cpp)
 TARGET_LINK_LIBRARIES(testAggregatedTask ${TestLibs} ${PCL_LIBRARIES})
@@ -111,7 +115,9 @@ add_test(NAME OpenSoT_constraints_BilateralConstraint COMMAND testBilateralConst
 add_test(NAME OpenSoT_constraints_velocity_JointLimits  COMMAND testJointLimitsVelocityBounds)
 add_test(NAME OpenSoT_constraints_velocity_VelocityLimit COMMAND testVelocityLimitsVelocityBounds)
 add_test(NAME OpenSoT_constraints_velocity_CoMVelocity COMMAND testCoMVelocityVelocityConstraint)
-add_test(NAME OpenSoT_constraints_velocity_ConvexHull COMMAND testConvexHullVelocityConstraint)
+if(PCL_FOUND)
+  add_test(NAME OpenSoT_constraints_velocity_ConvexHull COMMAND testConvexHullVelocityConstraint)
+endif(PCL_FOUND)
 add_test(NAME OpenSoT_solvers_qpOases COMMAND testSolverQPOases)
 add_test(NAME OpenSoT_task_Aggregated COMMAND testAggregatedTask)
 add_test(NAME OpenSoT_task_velocity_Cartesian COMMAND testCartesianVelocityTask)
