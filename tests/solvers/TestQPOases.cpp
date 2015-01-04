@@ -526,28 +526,34 @@ TEST_F(testQPOasesTask, testQPOasesTask)
 
     yarp::sig::Vector q_ref(10, 0.0);
     yarp::sig::Vector q(q_ref.size(), 0.0);
-    for(unsigned int i = 0; i < q.size(); ++i)
-        q[i] = tests_utils::getRandomAngle();
-    std::cout<<"q: "<<q.toString()<<std::endl;
 
-    boost::shared_ptr<OpenSoT::tasks::velocity::Postural> postural_task(
-                new OpenSoT::tasks::velocity::Postural(q));
-    postural_task->setReference(q_ref);
-    postural_task->update(q);
-    std::cout<<"error: "<<postural_task->getb().toString()<<std::endl;
+    for(unsigned int i = 0; i < 1000; ++i)
+    {
 
-    OpenSoT::solvers::QPOasesProblem qp_postural_problem(postural_task->getXSize(), 0,
-                                                         postural_task->getHessianAtype());
+        for(unsigned int i = 0; i < q.size(); ++i)
+            q[i] = tests_utils::getRandomAngle();
 
-    EXPECT_TRUE(qp_postural_problem.initProblem(postural_task->getA(), -1.0*postural_task->getb(),
-                                                yarp::sig::Matrix(), yarp::sig::Vector(), yarp::sig::Vector(),
-                                                yarp::sig::Vector(), yarp::sig::Vector()));
-    std::cout<<"solution: "<<qp_postural_problem.getSolution().toString()<<std::endl;
-    q += qp_postural_problem.getSolution();
+        std::cout<<"q: "<<q.toString()<<std::endl;
 
-    for(unsigned int i = 0; i < q.size(); ++i)
-        EXPECT_DOUBLE_EQ(q[i], q_ref[i]);
+        boost::shared_ptr<OpenSoT::tasks::velocity::Postural> postural_task(
+                    new OpenSoT::tasks::velocity::Postural(q));
+        postural_task->setReference(q_ref);
+        postural_task->update(q);
+        std::cout<<"error: "<<postural_task->getb().toString()<<std::endl;
 
+        OpenSoT::solvers::QPOasesProblem qp_postural_problem(postural_task->getXSize(), 0,
+                                                             postural_task->getHessianAtype());
+
+        EXPECT_TRUE(qp_postural_problem.initProblem(postural_task->getA(), -1.0*postural_task->getb(),
+                                                    yarp::sig::Matrix(), yarp::sig::Vector(), yarp::sig::Vector(),
+                                                    yarp::sig::Vector(), yarp::sig::Vector()));
+        std::cout<<"solution: "<<qp_postural_problem.getSolution().toString()<<std::endl;
+        q += qp_postural_problem.getSolution();
+
+        for(unsigned int i = 0; i < q.size(); ++i)
+            EXPECT_NEAR(q[i], q_ref[i],1E-13);
+
+    }
 }
 
 using namespace OpenSoT::constraints::velocity;
