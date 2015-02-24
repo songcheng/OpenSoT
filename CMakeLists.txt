@@ -99,7 +99,7 @@ ADD_LIBRARY(OpenSoT SHARED
                     src/tasks/velocity/Interaction.cpp
                     src/tasks/velocity/Manipulability.cpp
                     src/utils/AutoStack.cpp
-                    src/utils/DefaultHumanoidStack.cpp
+                    #src/utils/DefaultHumanoidStack.cpp
                     src/utils/VelocityAllocation.cpp
                     ${sot_INCLUDES})
 
@@ -160,10 +160,10 @@ include(AddUninstallTarget)
 
 add_subdirectory(app)
 add_subdirectory(doc)
-add_subdirectory(examples)
+#add_subdirectory(examples)
 
 #######################
 # Add Testing target  #
 #######################
-enable_testing()
-add_subdirectory(tests)
+#enable_testing()
+#add_subdirectory(tests)
